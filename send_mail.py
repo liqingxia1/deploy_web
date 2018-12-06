@@ -8,19 +8,14 @@ from email.header import Header
 class Send_Mail:
 	def start(self,msg):
 		# 发件人
-		from_addr = "liqingxia@cootf.com"
-		password  = "tq04v8t923_JB"
+		from_addr = "****"
+		password  = "****"
 		smtp_server = 'smtp.mxhichina.com'
 
 		# 接收人
-		to_addr  = ["121261667@qq.com"]
+		to_addr  = ["ctfcs@cootf.com"]
 		# 抄送人
-		cc = ["121261667@qq.com","liqingxia3344@126.com"]
-
-		# 接收人
-		#to_addr  = ["ctfcs@cootf.com"]
-		# 抄送人
-		#cc = ["zhangyupeng@cootf.com","yuanfuchao@cootf.com","yuanfuchao@cootf.com","xinziwei@cootf.com","wanghui@cootf.com","liangzhongwei@cootf.com","mayingying@cootf.com","hanshuming@cootf.com"]
+		cc = ["zhangyupeng@cootf.com","yuanfuchao@cootf.com","yuanfuchao@cootf.com","xinziwei@cootf.com","wanghui@cootf.com","liangzhongwei@cootf.com","mayingying@cootf.com","hanshuming@cootf.com"]
 
 
 		toaddrs = to_addr + cc
