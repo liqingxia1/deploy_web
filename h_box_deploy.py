@@ -14,7 +14,7 @@ class H_BOX_Deploy:
 		reload(sys)
 		sys.setdefaultencoding('utf-8')
 
-	def login(self, url="http://fota.redstone.net.cn/", username="CoolTel2017", password="123!@#"):
+	def login(self, url="http://fota.redstone.net.cn/", username="******", password="******"):
 		# 打开网页并执行登录，验证码需手动输入
 		self.driver = webdriver.Firefox()
 		self.driver.maximize_window()
