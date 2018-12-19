@@ -9,7 +9,7 @@ class Send_Mail:
 	def start(self,msg,version_name):
 		# 发件人
 		from_addr = "liqingxia@cootf.com"
-		password  = "tq04v8t923_JB"
+		password  = "********"
 		smtp_server = 'smtp.mxhichina.com' 
 
 		# 接收人
