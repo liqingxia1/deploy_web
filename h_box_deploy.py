@@ -6,7 +6,6 @@ import pyperclip
 from selenium.webdriver.support.ui import Select
 import time
 
- 
 class H_BOX_Deploy:
 	def __init__(self):
 		self.driver = ""
@@ -15,7 +14,7 @@ class H_BOX_Deploy:
 		reload(sys)
 		sys.setdefaultencoding('utf-8')
 
-	def login(self, url="http://fota.redstone.net.cn/", username="***", password="***"):
+	def login(self, url="http://fota.redstone.net.cn/", username="CoolTel2017", password="123!@#"):
 		# 打开网页并执行登录，验证码需手动输入
 		self.driver = webdriver.Firefox()
 		self.driver.maximize_window()
@@ -56,11 +55,20 @@ class H_BOX_Deploy:
 		time.sleep(2)
 
 
-	#  选择语言
+		#  选择语言
 		self.driver.find_element_by_xpath("/html/body/div/div[2]/div[1]/div/div/form/div[8]/div/input").click()
 		self.driver.find_element_by_name("en-gb").click()
-		self.driver.find_element_by_name("es-es").click()
+		if "KHM" in versions:
+			Language = "ខ្មែរ"
+			self.driver.find_element_by_id("searchText").click()
+			pyperclip.copy(Language)
+			pyautogui.hotkey('ctrl', 'v')
+			self.driver.find_element_by_xpath('/html/body/div/div[2]/div[2]/div/div[2]/div[2]/button').click()
+			self.driver.find_element_by_name("km-kh").click()
+		else :
+			self.driver.find_element_by_name("es-es").click()
 		self.driver.find_element_by_xpath("/html/body/div/div[2]/div[2]/div/button[1]").click()
+
 
 		pop = self.driver.find_element_by_xpath('/html/body/div/div[2]/div[1]/div/div/form/div[3]/div[2]/label').text
 		if pop:
@@ -82,7 +90,7 @@ class H_BOX_Deploy:
 				self.driver.find_element_by_xpath('/html/body/div[1]/div[2]/div/div/div[2]/table/tbody/tr[1]/td[7]/div/a[3]').click()
 				return True
 
-	
+
 	
 
 	def add_difference_package(self,start_versions, update_version):
@@ -93,6 +101,8 @@ class H_BOX_Deploy:
 		self.driver.find_element_by_class_name("select2-input").send_keys(start_versions)
 		self.driver.find_element_by_xpath('/html/body/div[3]/ul/li/div/span').click()
 
+		# 选项仅WIFI
+		self.driver.find_element_by_xpath('/html/body/div/div[2]/div[1]/div/div/form/div[4]/div/label[2]/span').click()
 		self.driver.find_element_by_xpath('/html/body/div[1]/div[2]/div[1]/div/div/form/div[9]/div/div/div[2]/div[1]/div[2]/label').click()
 
 		ota_path = update_version
@@ -109,13 +119,30 @@ class H_BOX_Deploy:
 		self.driver.execute_script(js)
 		time.sleep(2)
 
-
 		# 添加语言
 		self.driver.find_element_by_xpath('/html/body/div[1]/div[2]/div[1]/div/div/form/div[10]/div/input').click()
+
 		self.driver.find_element_by_name("en-gb").click()
-		self.driver.find_element_by_name("es-es").click()
+		if "KHM" in update_version:
+			Language = "ខ្មែរ"
+			self.driver.find_element_by_id("searchText").click()
+			pyperclip.copy(Language)
+			pyautogui.hotkey('ctrl', 'v')
+			self.driver.find_element_by_xpath('/html/body/div/div[2]/div[2]/div/div[2]/div[2]/button').click()
+			self.driver.find_element_by_name("km-kh").click()
+		else:
+			self.driver.find_element_by_name("es-es").click()
 		self.driver.find_element_by_xpath('/html/body/div[1]/div[2]/div[2]/div/button[1]').click()
 		time.sleep(2)
+
+		# 选择分组
+		if  "C8" in update_version:
+			self.driver.find_element_by_xpath('/html/body/div/div[2]/div[1]/div/div/form/div[13]/div/label[3]/span').click()
+		elif "C10" in update_version:
+			self.driver.find_element_by_xpath('/html/body/div/div[2]/div[1]/div/div/form/div[13]/div/label[6]/span').click()
+		elif "CPE02" in update_version:
+			self.driver.find_element_by_xpath('/html/body/div/div[2]/div[1]/div/div/form/div[13]/div/label[7]/span').click()
+
 
 		while True:
 			up = self.driver.find_element_by_xpath('/html/body/div/div[2]/div[1]/div/div/form/div[9]/div/div/div[1]/div/p[4]').text
@@ -149,7 +176,7 @@ class H_BOX_Deploy:
 			else:
 				print "关键字搜索没有搜索到该版本号："+last_version_number
 				self.open_channel_manage()
-
+			
 		if sta == 0:
 			pages = self.driver.find_element_by_xpath('/html/body/div/div[2]/div/div/div[2]/div/a[9]').text
 			#print pages
@@ -205,7 +232,7 @@ class H_BOX_Deploy:
 		self.driver.find_element_by_xpath('/html/body/div/div[2]/div/div/div[1]/div/form/div/div[6]/div/input').send_keys(version_name)
 		self.driver.find_element_by_xpath('/html/body/div/div[2]/div/div/div[1]/div/form/div/div[6]/div/span/button').click()
 		sta = 0
-		try :
+		try:
 			self.driver.find_element_by_xpath('/html/body/div/div[2]/div/div/div[2]/table/tbody/tr/td[7]/div/a[3]').click()
 			sta = 1
 		except BaseException as e:
@@ -255,7 +282,7 @@ class H_BOX_Deploy:
 				print "查到到对应的版本，但未发布过差分包版本"
 				return True,status_number
 		except BaseException:
-			return False,status_number
+			return False, status_number
 
 	def click_cancel(self,status_number,number=""):
 		# status_number 为已发布版本的数量
@@ -288,8 +315,3 @@ class H_BOX_Deploy:
 		self.open_channel_manage()
 		end = self.add_firmware(version_name, model)
 		return end
-
-
- 
- 
-
